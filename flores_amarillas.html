@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Día de las Flores Amarillas 🌻💛</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold-glow: rgba(254, 240, 138, 0.85);
+            --bg-dark: #050811;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            user-select: none;
+            color: #ffffff;
+        }
+
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        .font-script-title {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        /* Glowing typography effects */
+        .glow-title {
+            text-shadow: 0 0 15px rgba(254, 240, 138, 0.9), 0 0 30px rgba(234, 179, 8, 0.7), 0 0 55px rgba(202, 138, 4, 0.5);
+        }
+
+        .glow-sub {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        }
+
+        /* Interactive Cyan capsule button */
+        .cyan-capsule-btn {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.8), inset 0 0 12px rgba(255, 255, 255, 0.85);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cyan-capsule-btn:hover {
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 0 38px rgba(0, 242, 254, 1), inset 0 0 15px rgba(255, 255, 255, 0.95);
+        }
+
+        .cyan-capsule-btn:active {
+            transform: scale(0.96) translateY(1px);
+        }
+
+        /* Glassmorphism tag badge */
+        .sub-tag-badge {
+            background: rgba(255, 255, 255, 0.09);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+        }
+
+        /* Scene transition handling */
+        .scene {
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+        }
+
+        .scene-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+            position: absolute;
+            inset: 0;
+        }
+
+        .scene-visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+            position: relative;
+        }
+
+        /* SVG Leaf sprouting animation */
+        .leaf-node {
+            transform-origin: center center;
+            transform: scale(0);
+            transition: transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .leaf-node.visible {
+            transform: scale(1);
+        }
+
+        /* SVG Flower blooming animation */
+        .flower-group {
+            transform-origin: center center;
+            transform: scale(0) rotate(-25deg);
+            opacity: 0;
+            transition: transform 1.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.85s ease-out;
+            filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.85));
+        }
+
+        .flower-group.bloomed {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+        }
+
+        /* Gentle continuous pulse for bloomed petals */
+        @keyframes subtlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .bloomed .main-petals {
+            animation: subtlePulse 4s ease-in-out infinite alternate;
+        }
+
+        /* Bouquet wrapper paper unfold effect */
+        .wrapper-paper {
+            transform-origin: bottom center;
+            transform: scaleY(0) scaleX(0.75);
+            opacity: 0;
+            transition: transform 1.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s ease-out;
+        }
+
+        .wrapper-paper.open {
+            transform: scaleY(1) scaleX(1);
+            opacity: 1;
+        }
+
+        /* Ribbon bow animation */
+        .ribbon-bow {
+            transform-origin: center center;
+            transform: scale(0);
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .ribbon-bow.pop {
+            transform: scale(1);
+        }
+
+        /* Animated butterfly flight */
+        @keyframes butterflyFly {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(18px, -24px) rotate(10deg); }
+            50% { transform: translate(-12px, -42px) rotate(-8deg); }
+            75% { transform: translate(14px, -18px) rotate(5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        .animated-butterfly {
+            animation: butterflyFly 6.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white relative flex flex-col items-center justify-between p-2 sm:p-5 overflow-x-hidden">
+
+    <canvas id="sparksCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Main Container -->
+    <main class="relative z-10 w-full max-w-4xl min-h-screen flex flex-col items-center justify-center py-2 my-auto">
+        
+        <section id="wreathScene" class="scene scene-visible w-full flex flex-col items-center justify-center">
+            
+            <div class="relative w-full aspect-square max-w-[520px] sm:max-w-[600px] flex items-center justify-center">
+                <!-- SVG Circular Floral Wreath -->
+                <svg id="wreathSvg" viewBox="0 0 800 800" class="w-full h-full overflow-visible">
+                    <defs>
+                        <linearGradient id="stemGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#1b4313" />
+                            <stop offset="50%" stop-color="#38761d" />
+                            <stop offset="100%" stop-color="#55a630" />
+                        </linearGradient>
+
+                        <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#74c69d" />
+                            <stop offset="50%" stop-color="#2d6a4f" />
+                            <stop offset="100%" stop-color="#1b4332" />
+                        </linearGradient>
+
+                        <linearGradient id="petalMainGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#e65100" />
+                            <stop offset="20%" stop-color="#f57c00" />
+                            <stop offset="55%" stop-color="#ffca28" />
+                            <stop offset="100%" stop-color="#fff59d" />
+                        </linearGradient>
+
+                        <linearGradient id="petalOuterGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#ff8f00" />
+                            <stop offset="40%" stop-color="#ffc107" />
+                            <stop offset="100%" stop-color="#fffde7" />
+                        </linearGradient>
+
+                        <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="8" result="blur" />
+                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
+                    </defs>
+
+                    <!-- Circular Stem Branches -->
+                    <g id="stemsGroup" stroke="url(#stemGrad)" stroke-linecap="round" fill="none">
+                        <path id="stemLeft" d="M 400 710 C 220 700, 110 550, 110 390 C 110 230, 230 110, 390 110" stroke-width="6.5" />
+                        <path id="stemRight" d="M 400 710 C 580 700, 690 550, 690 390 C 690 230, 570 110, 410 110" stroke-width="6.5" />
+                        <path id="stemLeftBranch1" d="M 180 570 C 120 450, 150 280, 270 180" stroke-width="4" />
+                        <path id="stemRightBranch1" d="M 620 570 C 680 450, 650 280, 530 180" stroke-width="4" />
+                    </g>
+
+                    <g id="leavesGroup"></g>
+                    <g id="flowersGroup"></g>
+                </svg>
+
+                <!-- INNER CENTRAL CONTENT -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 sm:p-10 pointer-events-auto z-20 max-w-[70%] max-h-[70%] mx-auto my-auto">
+                    
+                    <h1 class="font-cursive text-3xl sm:text-4xl md:text-5xl font-bold text-amber-100 glow-title tracking-wide leading-tight mb-3">
+                        Para La dueña de mi corazon...
+                    </h1>
+
+                    <div class="sub-tag-badge px-4 py-1.5 rounded-full mb-5 max-w-full">
+                        <p class="glow-sub text-xs sm:text-sm text-slate-200 font-light whitespace-nowrap flex items-center justify-center gap-1.5">
+                            Este regalo es para ti <br>con mucho amor <span class="text-sm sm:text-base">💛</span>
+                        </p>
+                    </div>
+
+                    <!-- Active Gift Button -->
+                    <div>
+                        <button 
+                            id="btnOpenGift"
+                            class="cyan-capsule-btn text-xs sm:text-sm font-bold text-slate-950 px-8 py-3 rounded-full cursor-pointer tracking-widest uppercase border border-cyan-100/80 flex items-center gap-2 shadow-xl">
+                            <span> Dale click amor</span>
+                            <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer control -->
+            <footer class="w-full flex items-center justify-between text-xs text-slate-400 pt-3 border-t border-slate-800/60 max-w-xl">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                    <span>Floreciendo con amor...</span>
+                </div>
+                
+                <button id="replayWreathBtn" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-700/60 text-amber-200 transition-all hover:scale-105 active:scale-95 text-xs">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    <span>Repetir animacion</span>
+                </button>
+            </footer>
+        </section>
+
+        <section id="bouquetScene" class="scene scene-hidden w-full flex flex-col items-center justify-center">
+            
+            <!-- Header Titles -->
+            <div class="text-center z-20 mb-1 sm:mb-2 px-4">
+                <h2 class="font-script-title text-4xl sm:text-5xl md:text-6xl text-amber-200 glow-title tracking-wide leading-snug">
+                    Te amo mi amor <br>
+                    gracias por estar conmingo todo este tiempo
+                </h2>
+                <div class="inline-block sub-tag-badge px-5 py-1 rounded-full mt-0.5">
+                    <p class="font-cursive text-base sm:text-xl text-amber-100 glow-sub">
+                        Ten tu ramo mi Flaca ✨💛<br>
+                        espero te guste
+                    </p>
+                </div>
+            </div>
+
+            <!-- Taller & Bushier Bouquet SVG Graphic Container -->
+            <div class="relative w-full aspect-[3/4] max-w-[560px] sm:max-w-[660px] flex items-center justify-center my-1">
+                
+                <svg id="bouquetSvg" viewBox="0 0 800 1150" class="w-full h-full overflow-visible">
+                    <defs>
+                        <!-- Wrapping Paper Gradients -->
+                        <linearGradient id="wrapGradBack" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#581c87" />
+                            <stop offset="50%" stop-color="#3b0764" />
+                            <stop offset="100%" stop-color="#1e0136" />
+                        </linearGradient>
+
+                        <linearGradient id="wrapGradFront" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#a21caf" />
+                            <stop offset="50%" stop-color="#701a75" />
+                            <stop offset="100%" stop-color="#4a044e" />
+                        </linearGradient>
+
+                        <linearGradient id="wrapHighlight" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#f0abfc" stop-opacity="0.65"/>
+                            <stop offset="100%" stop-color="#c084fc" stop-opacity="0.15"/>
+                        </linearGradient>
+
+                        <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fef08a" />
+                            <stop offset="50%" stop-color="#eab308" />
+                            <stop offset="100%" stop-color="#ca8a04" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Tall Stems Base Trunk -->
+                    <g id="bouquetStemsGroup" stroke="url(#stemGrad)" stroke-linecap="round" fill="none">
+                        <!-- High reaching vertical stems for tall flowers -->
+                        <path id="bStem1" d="M 400 1020 Q 395 720, 400 280" stroke-width="10" />
+                        <path id="bStem2" d="M 400 1020 Q 360 700, 280 340" stroke-width="8" />
+                        <path id="bStem3" d="M 400 1020 Q 440 700, 520 340" stroke-width="8" />
+                        <path id="bStem4" d="M 400 1020 Q 330 680, 180 400" stroke-width="7" />
+                        <path id="bStem5" d="M 400 1020 Q 470 680, 620 400" stroke-width="7" />
+                        <path id="bStem6" d="M 400 1020 Q 370 630, 310 240" stroke-width="7" />
+                        <path id="bStem7" d="M 400 1020 Q 430 630, 490 240" stroke-width="7" />
+                        <path id="bStem8" d="M 400 1020 Q 310 650, 130 480" stroke-width="6" />
+                        <path id="bStem9" d="M 400 1020 Q 490 650, 670 480" stroke-width="6" />
+                    </g>
+
+                    <!-- Dense Back Leaves Layer (Full / Frondoso fill) -->
+                    <g id="bouquetBackLeaves"></g>
+
+                    <!-- Taller Paper Wrapper Back Layer -->
+                    <g id="wrapBackGroup" class="wrapper-paper">
+                        <!-- Wide Outer Wing Left -->
+                        <path d="M 400 1030 L 90 560 L 180 380 L 400 620 Z" fill="url(#wrapGradBack)" stroke="#c084fc" stroke-width="1.8" opacity="0.92" />
+                        <!-- Wide Outer Wing Right -->
+                        <path d="M 400 1030 L 710 560 L 620 380 L 400 620 Z" fill="url(#wrapGradBack)" stroke="#c084fc" stroke-width="1.8" opacity="0.92" />
+                    </g>
+
+                    <!-- Lilies Flowers Layer (14+ Blooming Lily heads) -->
+                    <g id="bouquetFlowersGroup"></g>
+
+                    <!-- Taller Paper Wrapper Front Layer & Ribbon Bow -->
+                    <g id="wrapFrontGroup" class="wrapper-paper">
+                        <!-- Front Cone Folding Left -->
+                        <path d="M 400 1040 L 130 620 L 310 520 L 400 1040 Z" fill="url(#wrapGradFront)" stroke="#e879f9" stroke-width="2" />
+                        <!-- Front Cone Folding Right -->
+                        <path d="M 400 1040 L 670 620 L 490 520 L 400 1040 Z" fill="url(#wrapGradFront)" stroke="#e879f9" stroke-width="2" />
+                        <!-- Translucent Glow Overlays -->
+                        <path d="M 400 1040 L 190 640 L 400 560 Z" fill="url(#wrapHighlight)" />
+                        <path d="M 400 1040 L 610 640 L 400 560 Z" fill="url(#wrapHighlight)" />
+
+                        <!-- Large Ribbon Bow Knot -->
+                        <g id="ribbonGroup" class="ribbon-bow">
+                            <!-- Left Ribbon Tail -->
+                            <path d="M 395 790 Q 330 880, 290 970" stroke="url(#ribbonGrad)" stroke-width="14" stroke-linecap="round" fill="none"/>
+                            <!-- Right Ribbon Tail -->
+                            <path d="M 405 790 Q 470 880, 510 970" stroke="url(#ribbonGrad)" stroke-width="14" stroke-linecap="round" fill="none"/>
+                            <!-- Bow Loops -->
+                            <path d="M 400 790 C 310 730, 270 830, 400 790 Z" fill="url(#ribbonGrad)" stroke="#fef08a" stroke-width="1.8"/>
+                            <path d="M 400 790 C 490 730, 530 830, 400 790 Z" fill="url(#ribbonGrad)" stroke="#fef08a" stroke-width="1.8"/>
+                            <!-- Knot Center -->
+                            <circle cx="400" cy="790" r="16" fill="#fef08a" stroke="#ca8a04" stroke-width="2.5"/>
+                        </g>
+                    </g>
+
+                    <!-- Floating Ambient Butterflies -->
+                    <g class="animated-butterfly" style="animation-delay: 0s;">
+                        <path d="M 180 220 Q 160 190, 140 210 Q 130 230, 160 240 Z" fill="#ffea00" opacity="0.85"/>
+                        <path d="M 180 220 Q 200 190, 220 210 Q 230 230, 200 240 Z" fill="#ffd000" opacity="0.85"/>
+                    </g>
+                    <g class="animated-butterfly" style="animation-delay: 2.8s;">
+                        <path d="M 640 260 Q 620 230, 600 250 Q 590 270, 620 280 Z" fill="#ffea00" opacity="0.85"/>
+                        <path d="M 640 260 Q 660 230, 680 250 Q 690 270, 660 280 Z" fill="#ffd000" opacity="0.85"/>
+                    </g>
+                </svg>
+            </div>
+
+            <footer class="w-full flex items-center justify-between text-xs text-slate-300 pt-2 border-t border-slate-800/60 max-w-xl z-20 gap-3">
+                <button id="btnBackToWreath" class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-cyan-300 transition-all hover:scale-105 active:scale-95 shadow-md">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    <span>Volver a la corona</span>
+                </button>
+
+                <button id="replayBouquetBtn" class="flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-amber-200 transition-all hover:scale-105 active:scale-95 shadow-md">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    <span>Repetir Ramo</span>
+                </button>
+            </footer>
+        </section>
+
+    </main>
+
+    <script>
+        /* Ambient Floating Golden Sparks Canvas System */
+        const canvas = document.getElementById('sparksCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class SparkParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 80;
+                this.size = Math.random() * 2.8 + 0.8;
+                this.speedY = Math.random() * 0.95 + 0.35;
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.opacity = Math.random() * 0.75 + 0.25;
+                this.fadeSpeed = Math.random() * 0.004 + 0.002;
+                this.hue = Math.random() * 25 + 40;
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += Math.sin(this.y * 0.01) * 0.5 + this.speedX;
+                this.opacity -= this.fadeSpeed;
+
+                if (this.y < -20 || this.opacity <= 0) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${this.hue}, 100%, 70%, ${this.opacity})`;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = `hsl(${this.hue}, 100%, 50%)`;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        for (let i = 0; i < 90; i++) {
+            const spark = new SparkParticle();
+            spark.y = Math.random() * height;
+            particles.push(spark);
+        }
+
+        function animateSparks() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateSparks);
+        }
+        animateSparks();
+
+        /* SVG Generators for Lily Flowers & Lush Greenery */
+        function createLilySVG(x, y, scale = 1, rotation = 0) {
+            const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            g.setAttribute("class", "flower-group");
+            g.setAttribute("style", `transform-origin: ${x}px ${y}px;`);
+            
+            const petalPaths = [
+                `M ${x} ${y} C ${x-15} ${y-40}, ${x-35} ${y-70}, ${x} ${y-90} C ${x+35} ${y-70}, ${x+15} ${y-40}, ${x} ${y}`,
+                `M ${x} ${y} C ${x+35} ${y-30}, ${x+75} ${y-40}, ${x+85} ${y-5} C ${x+65} ${y+25}, ${x+35} ${y+15}, ${x} ${y}`,
+                `M ${x} ${y} C ${x+40} ${y+15}, ${x+70} ${y+45}, ${x+65} ${y+80} C ${x+30} ${y+75}, ${x+15} ${y+45}, ${x} ${y}`,
+                `M ${x} ${y} C ${x+15} ${y+45}, ${x} ${y+80}, ${x-25} ${y+85} C ${x-45} ${y+65}, ${x-30} ${y+35}, ${x} ${y}`,
+                `M ${x} ${y} C ${x-35} ${y+15}, ${x-70} ${y+45}, ${x-75} ${y+15} C ${x-60} ${y-20}, ${x-35} ${y-15}, ${x} ${y}`,
+                `M ${x} ${y} C ${x-40} ${y-25}, ${x-75} ${y-35}, ${x-70} ${y-70} C ${x-40} ${y-65}, ${x-20} ${y-35}, ${x} ${y}`
+            ];
+
+            let html = `<g transform="translate(${x},${y}) scale(${scale}) rotate(${rotation}) translate(${-x},${-y})">`;
+            html += `<circle cx="${x}" cy="${y}" r="48" fill="#ffb700" opacity="0.32" filter="url(#goldGlow)"/>`;
+
+            html += `<g class="outer-petals">`;
+            petalPaths.forEach(d => {
+                html += `<path d="${d}" fill="url(#petalOuterGrad)" stroke="#f57c00" stroke-width="1.2" opacity="0.95"/>`;
+            });
+            html += `</g>`;
+
+            html += `<g class="main-petals">`;
+            petalPaths.forEach((d) => {
+                html += `<path d="${d}" fill="url(#petalMainGrad)" stroke="#e65100" stroke-width="1" transform="rotate(15, ${x}, ${y}) scale(0.85) translate(${(x - x*0.85)/0.85}, ${(y - y*0.85)/0.85})"/>`;
+            });
+            html += `</g>`;
+
+            html += `<g class="stamens">`;
+            const angles = [0, 60, 120, 180, 240, 300];
+            angles.forEach(ang => {
+                const rad = (ang * Math.PI) / 180;
+                const sx = x + Math.cos(rad) * 28;
+                const sy = y + Math.sin(rad) * 28;
+                html += `
+                    <path d="M ${x} ${y} Q ${x + Math.cos(rad)*15} ${y + Math.sin(rad)*15}, ${sx} ${sy}" stroke="#e65100" stroke-width="2" fill="none"/>
+                    <ellipse cx="${sx}" cy="${sy}" rx="4" ry="2.5" fill="#d50000" transform="rotate(${ang}, ${sx}, ${sy})"/>
+                `;
+            });
+            html += `<circle cx="${x}" cy="${y}" r="6.5" fill="#ff8f00"/>`;
+            html += `<circle cx="${x}" cy="${y}" r="3.5" fill="#ffe082"/>`;
+            html += `</g>`;
+
+            html += `</g>`;
+            g.innerHTML = html;
+            return g;
+        }
+
+        function createLeafSVG(x, y, rotation, scale = 1) {
+            const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            g.setAttribute("class", "leaf-node");
+            g.setAttribute("style", `transform-origin: ${x}px ${y}px;`);
+
+            const path = `M ${x} ${y} C ${x+25} ${y-20}, ${x+50} ${y-15}, ${x+65} ${y} C ${x+45} ${y+20}, ${x+20} ${y+20}, ${x} ${y}`;
+            g.innerHTML = `
+                <g transform="rotate(${rotation}, ${x}, ${y}) scale(${scale})">
+                    <path d="${path}" fill="url(#leafGrad)" stroke="#1b4332" stroke-width="1.2"/>
+                    <path d="M ${x} ${y} Q ${x+32} ${y}, ${x+62} ${y}" stroke="#74c69d" stroke-width="1" fill="none" opacity="0.75"/>
+                </g>
+            `;
+            return g;
+        }
+
+        const wreathFlowerConfigs = [
+            { x: 260, y: 160, scale: 0.9, rot: 30, delay: 2800 },
+            { x: 400, y: 110, scale: 1.0, rot: 0, delay: 3400 },
+            { x: 540, y: 160, scale: 0.9, rot: -30, delay: 2800 },
+            { x: 120, y: 390, scale: 1.05, rot: 75, delay: 2000 },
+            { x: 680, y: 390, scale: 1.05, rot: -75, delay: 2000 },
+            { x: 200, y: 590, scale: 0.95, rot: 120, delay: 1400 },
+            { x: 400, y: 700, scale: 1.1, rot: 180, delay: 800 },
+            { x: 600, y: 590, scale: 0.95, rot: -120, delay: 1400 }
+        ];
+
+        const wreathLeafConfigs = [
+            { x: 330, y: 120, rot: 20, scale: 1.1, delay: 3000 },
+            { x: 470, y: 120, rot: -20, scale: 1.1, delay: 3000 },
+            { x: 170, y: 260, rot: 50, scale: 1.2, delay: 2400 },
+            { x: 630, y: 260, rot: -50, scale: 1.2, delay: 2400 },
+            { x: 130, y: 490, rot: 100, scale: 1.1, delay: 1600 },
+            { x: 670, y: 490, rot: -100, scale: 1.1, delay: 1600 },
+            { x: 290, y: 670, rot: 150, scale: 1.1, delay: 1000 },
+            { x: 510, y: 670, rot: -150, scale: 1.1, delay: 1000 }
+        ];
+
+        function startWreathGrowth() {
+            const flowersGroup = document.getElementById('flowersGroup');
+            const leavesGroup = document.getElementById('leavesGroup');
+            
+            flowersGroup.innerHTML = '';
+            leavesGroup.innerHTML = '';
+
+            const stemIds = ['stemLeft', 'stemRight', 'stemLeftBranch1', 'stemRightBranch1'];
+            
+            stemIds.forEach(id => {
+                const path = document.getElementById(id);
+                if (!path) return;
+                const length = path.getTotalLength();
+                path.style.strokeDasharray = length;
+                path.style.strokeDashoffset = length;
+                path.style.transition = 'none';
+                path.getBoundingClientRect();
+                path.style.transition = 'stroke-dashoffset 3.8s ease-in-out';
+                path.style.strokeDashoffset = '0';
+            });
+
+            wreathLeafConfigs.forEach(cfg => {
+                const leafEl = createLeafSVG(cfg.x, cfg.y, cfg.rot, cfg.scale);
+                leavesGroup.appendChild(leafEl);
+                setTimeout(() => leafEl.classList.add('visible'), cfg.delay);
+            });
+
+            wreathFlowerConfigs.forEach(cfg => {
+                const flowerEl = createLilySVG(cfg.x, cfg.y, cfg.scale, cfg.rot);
+                flowersGroup.appendChild(flowerEl);
+                setTimeout(() => flowerEl.classList.add('bloomed'), cfg.delay);
+            });
+        }
+
+        // 15 Staggered Blooming Lilies spanning tall vertically and wide horizontally
+        const bouquetFlowerConfigs = [
+            // Crown Top Tier (Taller peak)
+            { x: 400, y: 180, scale: 1.2, rot: 0, delay: 2000 },
+            { x: 300, y: 240, scale: 1.1, rot: -22, delay: 2300 },
+            { x: 500, y: 240, scale: 1.1, rot: 22, delay: 2300 },
+            
+            // Middle Upper Tier
+            { x: 200, y: 320, scale: 1.05, rot: -40, delay: 2700 },
+            { x: 400, y: 310, scale: 1.15, rot: 5, delay: 2800 },
+            { x: 600, y: 320, scale: 1.05, rot: 40, delay: 2700 },
+            
+            // Center Lush Tier
+            { x: 290, y: 400, scale: 1.1, rot: -15, delay: 3200 },
+            { x: 510, y: 400, scale: 1.1, rot: 15, delay: 3200 },
+            { x: 130, y: 430, scale: 0.95, rot: -55, delay: 3400 },
+            { x: 670, y: 430, scale: 0.95, rot: 55, delay: 3400 },
+            
+            // Lower Front Tier
+            { x: 400, y: 480, scale: 1.1, rot: 0, delay: 3700 },
+            { x: 240, y: 500, scale: 1.0, rot: -30, delay: 3900 },
+            { x: 560, y: 500, scale: 1.0, rot: 30, delay: 3900 },
+            { x: 330, y: 570, scale: 0.95, rot: -10, delay: 4200 },
+            { x: 470, y: 570, scale: 0.95, rot: 10, delay: 4200 }
+        ];
+
+        // 20+ Dense Leaves filling out space between and behind stems
+        const bouquetLeafConfigs = [
+            { x: 360, y: 150, rot: -30, scale: 1.3, delay: 1700 },
+            { x: 440, y: 150, rot: 30, scale: 1.3, delay: 1700 },
+            { x: 230, y: 220, rot: -50, scale: 1.4, delay: 1900 },
+            { x: 570, y: 220, rot: 50, scale: 1.4, delay: 1900 },
+            { x: 150, y: 300, rot: -65, scale: 1.5, delay: 2200 },
+            { x: 650, y: 300, rot: 65, scale: 1.5, delay: 2200 },
+            { x: 100, y: 410, rot: -80, scale: 1.4, delay: 2500 },
+            { x: 700, y: 410, rot: 80, scale: 1.4, delay: 2500 },
+            { x: 330, y: 340, rot: -20, scale: 1.2, delay: 2600 },
+            { x: 470, y: 340, rot: 20, scale: 1.2, delay: 2600 },
+            { x: 220, y: 420, rot: -40, scale: 1.3, delay: 2900 },
+            { x: 580, y: 420, rot: 40, scale: 1.3, delay: 2900 },
+            { x: 160, y: 520, rot: -70, scale: 1.3, delay: 3300 },
+            { x: 640, y: 520, rot: 70, scale: 1.3, delay: 3300 },
+            { x: 280, y: 520, rot: -25, scale: 1.2, delay: 3500 },
+            { x: 520, y: 520, rot: 25, scale: 1.2, delay: 3500 }
+        ];
+
+        function startBouquetGrowth() {
+            const bFlowersGroup = document.getElementById('bouquetFlowersGroup');
+            const bLeavesGroup = document.getElementById('bouquetBackLeaves');
+            const wrapBack = document.getElementById('wrapBackGroup');
+            const wrapFront = document.getElementById('wrapFrontGroup');
+            const ribbon = document.getElementById('ribbonGroup');
+
+            bFlowersGroup.innerHTML = '';
+            bLeavesGroup.innerHTML = '';
+            
+            wrapBack.classList.remove('open');
+            wrapFront.classList.remove('open');
+            ribbon.classList.remove('pop');
+
+            // 1. Animate stems growing taller
+            const stemIds = ['bStem1', 'bStem2', 'bStem3', 'bStem4', 'bStem5', 'bStem6', 'bStem7', 'bStem8', 'bStem9'];
+            stemIds.forEach(id => {
+                const path = document.getElementById(id);
+                if (!path) return;
+                const length = path.getTotalLength();
+                path.style.strokeDasharray = length;
+                path.style.strokeDashoffset = length;
+                path.style.transition = 'none';
+                path.getBoundingClientRect();
+                path.style.transition = 'stroke-dashoffset 2.0s cubic-bezier(0.25, 1, 0.5, 1)';
+                path.style.strokeDashoffset = '0';
+            });
+
+            // 2. Unfold paper wrapper
+            setTimeout(() => {
+                wrapBack.classList.add('open');
+                wrapFront.classList.add('open');
+            }, 600);
+
+            // 3. Pop ribbon bow
+            setTimeout(() => {
+                ribbon.classList.add('pop');
+            }, 1400);
+
+            // 4. Append dense leaves
+            bouquetLeafConfigs.forEach(cfg => {
+                const leafEl = createLeafSVG(cfg.x, cfg.y, cfg.rot, cfg.scale);
+                bLeavesGroup.appendChild(leafEl);
+                setTimeout(() => leafEl.classList.add('visible'), cfg.delay);
+            });
+
+            // 5. Bloom all tall & bushy yellow lilies sequentially
+            bouquetFlowerConfigs.forEach(cfg => {
+                const flowerEl = createLilySVG(cfg.x, cfg.y, cfg.scale, cfg.rot);
+                bFlowersGroup.appendChild(flowerEl);
+                setTimeout(() => flowerEl.classList.add('bloomed'), cfg.delay);
+            });
+        }
+
+        const wreathScene = document.getElementById('wreathScene');
+        const bouquetScene = document.getElementById('bouquetScene');
+        const btnOpenGift = document.getElementById('btnOpenGift');
+        const btnBackToWreath = document.getElementById('btnBackToWreath');
+        const replayWreathBtn = document.getElementById('replayWreathBtn');
+        const replayBouquetBtn = document.getElementById('replayBouquetBtn');
+
+        // Transition from Wreath -> Taller Bouquet
+        btnOpenGift.addEventListener('click', () => {
+            wreathScene.classList.remove('scene-visible');
+            wreathScene.classList.add('scene-hidden');
+
+            setTimeout(() => {
+                bouquetScene.classList.remove('scene-hidden');
+                bouquetScene.classList.add('scene-visible');
+                startBouquetGrowth();
+            }, 400);
+        });
+
+        // Transition from Bouquet -> Wreath
+        btnBackToWreath.addEventListener('click', () => {
+            bouquetScene.classList.remove('scene-visible');
+            bouquetScene.classList.add('scene-hidden');
+
+            setTimeout(() => {
+                wreathScene.classList.remove('scene-hidden');
+                wreathScene.classList.add('scene-visible');
+                startWreathGrowth();
+            }, 400);
+        });
+
+        // Replay controls
+        replayWreathBtn.addEventListener('click', startWreathGrowth);
+        replayBouquetBtn.addEventListener('click', startBouquetGrowth);
+
+        // Initial launch
+        window.addEventListener('load', () => {
+            setTimeout(startWreathGrowth, 200);
+        });
+    </script>
+</body>
+</html>
